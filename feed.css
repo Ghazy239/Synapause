@@ -1,0 +1,204 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+}
+
+body{
+    background:#111;
+    color:white;
+}
+
+#timer-box{
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:12px 20px;
+    background:#222;
+    border-radius:10px;
+    z-index:1000;
+}
+
+.feed{
+    width:100%;
+    max-width:800px;
+    margin:auto;
+    padding-top:100px;
+}
+
+.post{
+    background:#1b1b1b;
+    padding:30px;
+    margin:20px;
+    border-radius:15px;
+    min-height:250px;
+}
+
+/* =====================
+   QUIZ OVERLAY
+===================== */
+#quiz-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(8px);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+#quiz-overlay.show{
+    display:flex;
+}
+
+#quiz-box{
+    width:90%;
+    max-width:500px;
+    max-height:90vh;
+    overflow-y:auto;
+    background:#1b1b1b;
+    color:white;
+    border-radius:20px;
+    padding:30px;
+}
+
+#quiz-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:25px;
+}
+
+#question-text{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+#answers{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.answer-btn{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    background:#333;
+    color:white;
+    transition:.2s;
+}
+
+.answer-btn:hover{
+    background:#555;
+}
+
+/* =====================
+   MOTIVATION SCREEN
+===================== */
+#motivation-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    backdrop-filter:blur(8px);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:10000;
+}
+
+#motivation-overlay.show{
+    display:flex;
+}
+
+#motivation-box{
+    background:#1b1b1b;
+    color:white;
+    width:90%;
+    max-width:500px;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+}
+
+#motivation-box h2{
+    margin-bottom:15px;
+}
+
+#motivation-box p{
+    opacity:.8;
+}
+
+.quiz-image{
+    display:none;
+    width:100%;
+    max-width:220px;
+    max-height:180px;
+    object-fit:contain;
+    margin:15px auto;
+    border-radius:12px;
+}
+
+.answer-content{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    gap:8px;
+}
+
+.answer-text{
+    display:block;
+}
+
+.answer-image{
+    display:none;
+    width:100%;
+    max-width:90px;
+    max-height:90px;
+    object-fit:contain;
+    margin:auto;
+    border-radius:10px;
+}
+
+#answers.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+#feedback-box{
+    display:none;
+    margin-top:20px;
+    padding:18px;
+    border-radius:12px;
+    background:#262626;
+}
+
+#feedback-title{
+    margin-bottom:10px;
+    font-size:18px;
+}
+
+#feedback-text{
+    opacity:.9;
+    line-height:1.5;
+}
+
+.answer-btn.correct{
+    background:#22c55e;
+    color:white;
+}
+
+.answer-btn.wrong{
+    background:#ef4444;
+    color:white;
+}
+
+.answer-btn:disabled{
+    cursor:not-allowed;
+    opacity:.9;
+}

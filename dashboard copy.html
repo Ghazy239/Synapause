@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Brain Dashboard</h1>
+        <p id="welcome">Loading...</p>
+        <div class="cards">
+            <div class="card">
+                <h2>Brain Analytics</h2>
+                <div id="brain-content">
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="target"></i>
+                            <span>Overall Accuracy</span>
+                        </div>
+                        <strong id="overall-accuracy" class="blue">
+                            -
+                        </strong>
+                    </div>
+                    <div class="progress">
+                        <div
+                            id="accuracy-bar"
+                            class="progress-fill blue">
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="timer"></i>
+                            <span>Average Response</span>
+                        </div>
+                        <strong id="average-response" class="purple">
+                            -
+                        </strong>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="flame"></i>
+                            <span>Current Streak</span>
+                        </div>
+                        <strong id="current-streak" class="orange">
+                            -
+                        </strong>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="trophy"></i>
+                            <span>Best Streak</span>
+                        </div>
+                        <strong id="best-streak" class="orange">
+                            -
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Category Analytics</h3>
+                <div id="category-content">
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="calculator"></i>
+                            <span>Numeric</span>
+                        </div>
+                        <strong id="numeric-accuracy" class="blue">
+                            -
+                        </strong>
+                    </div>
+                    <div class="progress">
+                        <div
+                            id="numeric-bar"
+                            class="progress-fill green">
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="timer"></i>
+                            <span>Numeric Response</span>
+                        </div>
+                        <strong id="numeric-response">-</strong>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="eye"></i>
+                            <span>Visual</span>
+                        </div>
+                        <strong id="visual-accuracy" class="purple">
+                            -
+                        </strong>
+                    </div>
+                    <div class="progress">
+                        <div
+                            id="visual-bar"
+                            class="progress-fill purple">
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="timer"></i>
+                            <span>Visual Response</span>
+                        </div>
+                        <strong id="visual-response">-</strong>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="brain"></i>
+                            <span>Stroop</span>
+                        </div>
+                        <strong id="stroop-accuracy" class="orange">
+                            -
+                        </strong>
+                    </div>
+                    <div class="progress">
+                        <div
+                            id="stroop-bar"
+                            class="progress-fill orange">
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="timer"></i>
+                            <span>Stroop Response</span>
+                        </div>
+                        <strong id="stroop-response">-</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h4>Activity</h4>
+                <div id="activity-content">
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="clipboard-list"></i>
+                            <span>Total Quiz</span>
+                        </div>
+                        <strong id="total-quiz" class="purple">-</strong>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="help-circle"></i>
+                            <span>Total Question</span>
+                        </div>
+                        <strong id="total-question" class="blue">-</strong>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="badge-check"></i>
+                            <span>Total Solved</span>
+                        </div>
+                        <strong id="total-solved" class="green">-</strong>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">
+                            <i data-lucide="refresh-cw"></i>
+                            <span>Replacement</span>
+                        </div>
+                        <strong id="replacement-count" class="orange">-</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

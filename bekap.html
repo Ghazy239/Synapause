@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Synapause</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header>
+    <h2 class="logo">Synapause</h2>
+    <nav class="navigation">
+      <div class="menu desktop-menu">
+        <a href="home.html" class="active">Home<span></span></a>
+        <a href="#">Contact Us<span></span></a>
+      </div>
+      <a class="menu-icon" id="menu-icon">☰<span></span></a>
+      <a class="sign-up" id="sign-up">Sign Up<span></span></a>
+      <div id="login-overlay">
+        <div id="login-popup">
+          <span id="close-login">&times;</span>
+          <h2>Login</h2>
+          <input
+            id="login-username"
+            type="text"
+            placeholder="Username"
+          >
+          <div class="password-box">
+            <input
+              id="login-password"
+              type="password"
+              placeholder="Password"
+            >
+            <span class="toggle-password" data-target="login-password">👁</span>
+          </div>
+          <button id="login-btn">Login</button>
+          <p>Don't have an account?
+            <a href="#" id="open-register">Register</a>
+          </p>
+        </div>
+        <div id="register-popup">
+          <span id="close-register">&times;</span>
+          <h2>Register</h2>
+          <input
+          id="reg-username"
+          type="text"
+          placeholder="Username"
+          >
+          <input
+          id="reg-email"
+          type="email"
+          placeholder="Email"
+          >
+          <div class="password-box">
+            <input
+              id="reg-password"
+              type="password"
+              placeholder="Password"
+            >
+            <span class="toggle-password" data-target="reg-password">👁</span>
+          </div>
+          <div class="password-box">
+            <input
+              id="reg-confirm"
+              type="password"
+              placeholder="Confirm Password"
+            >
+            <span class="toggle-password" data-target="reg-confirm">👁</span>
+          </div>
+          <small id="password-warning"></small>
+          <button id="register-btn">Register</button>
+          <p>Already have an account?
+            <a href="#" id="back-login">Login</a>
+          </p>
+        </div>
+      </div>
+    </nav>
+    <div id="profile-panel">
+      <span id="close-profile">&times;</span>
+      <h2>Account</h2>
+      <p id="profile-username">Username</p>
+      <p id="profile-email">Email</p>
+      <hr>
+      <button id="change-username-btn">Change Username</button>
+      <button id="change-email-btn">Change Email</button>
+      <button id="change-password-btn">Change Password</button>
+      <hr>
+      <button id="logout-btn">Logout</button>
+    </div>
+  </header>
+  
+  <div id="dropdown" class="dropdown">
+    <div class="menu mobile-menu">
+      <a href="home.html" class="active">Home<span></span></a>
+      <a href="stringwall.html">About Us<span></span></a>
+      <a href="#">Contact Us<span></span></a>
+      <div id="creatusest">
+        <div class="ecms" id="char-1">
+          <a href="home2.html"><img src="assets/sicmundus.png" /><span></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <section class="parallax">
+    <h2 id="text">SYNAPAUSE</h2>
+    <p id="text2">Cognitive Awakening Quiz</p>
+    <a href="more.html" id="btn">Explore More</a>
+  </section>
+  
+<script src="more.js"></script>
+</body>
+</html>
