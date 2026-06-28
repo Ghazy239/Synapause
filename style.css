@@ -21,7 +21,7 @@ header {
   width: 100%;
   background: rgba(0, 0, 0, 0.5);
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-  padding: 15px 100px;
+  padding:15px clamp(20px,5vw,100px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,21 +32,22 @@ header {
 .navigation {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap:18px;
+  flex-shrink:0;
 }
 
 .logo {
-  font-size: 2em;
+  font-size:clamp(1.5rem,4vw,2rem);
   color: white;
   user-select: none;
 }
 
 .menu-icon {
   position: relative;
-  font-size: 1.5em;
+  font-size: 2.3em;
   color: white;
   font-weight: 400;
-  margin-left: 250px;
+  margin-left: 0;
   padding: 6px 0;
   text-decoration: none;
   transition: 0.5s;
@@ -138,56 +139,89 @@ header {
   padding: 15px;
 }
 
-.dropdown {
-  display: none;
-  position: fixed;
-  top: 100px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 199;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+.dropdown{
+
+    display:none;
+
+    position:fixed;
+
+    top:75px;
+
+    right:15px;
+
+    width:270px;
+
+    background:#121212;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+
+    0 15px 40px
+
+    rgba(0,0,0,.45);
+
+    z-index:9999;
+
 }
 
 .dropdown.show {
   display: block;
 }
 
-.mobile-menu a {
-  display: block;
-  font-size: 1.2em;
-  color: white;
-  text-decoration: none;
-  margin: 5px 0;
-  position: relative;
-  padding: 5px 10px;
-  transition: 0.3s;
+.mobile-menu a{
+
+    position:relative;
+
+    font-size: 2vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:16px 18px;
+
+    margin:4px;
+
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:12px;
+
+    transition:.25s;
+
 }
 
 .mobile-menu a:hover,
-.mobile-menu a.active {
-  color: #999;
+.mobile-menu a.active{
+
+    background:
+
+    rgba(255,255,255,.08);
+
+    color:white;
+
 }
 
-.mobile-menu a span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: white;
-  border-radius: 10px;
-  z-index: -1;
-  transform: scale(0);
-  opacity: 0;
-  transition: 0.5s;
-}
+.mobile-menu hr{
 
-.mobile-menu a:hover span,
-.mobile-menu a.active span {
-  transform: scale(1);
-  opacity: 1;
+    border:none;
+
+    border-top:
+
+    1px solid
+
+    rgba(255,255,255,.08);
+
+    margin:8px 15px;
+
 }
 
 /* Responsive trigger */
@@ -228,25 +262,28 @@ header {
 
 #text {
   position: absolute;
-  font-size: 5em;
+  font-size:clamp(2.8rem,10vw,5rem);
   color: white;
   text-shadow: 2px 4px 6px black
 }
 
 #text2 {
   position: absolute;
-  margin-top: 5.5rem;
-  font-size: 2em;
+  margin-top: 5rem;
+  font-size:clamp(1rem,4vw,2rem);
+  text-align:center;
+  width:90%;
   color: white;
   text-shadow: 2px 4px 6px black
 }
 
 #btn {
   background-color: rgba(255, 255, 255, 0.2);
-  padding: 0.6rem 1.5rem;
-  margin-top: 12rem;
+  padding: 0.9rem 2rem;
+  margin-top: 11rem;
   color: white;
   border-radius: 10px;
+  font-size: clamp(.9rem,2vw,1.1rem);
   text-decoration: none;
   font-weight: bold;
   transition: background 0.3s, transform 0.2s;
@@ -354,7 +391,7 @@ header {
 }
 
 #register-popup{
-    width:380px;
+    width:min(400px,92vw);
     max-width:90%;
     background:white;
     border-radius:15px;
@@ -381,6 +418,7 @@ header {
 }
 
 #register-popup input{
+    width:100%;
     padding:12px;
     border-radius:8px;
     border:1px solid #bbb;
@@ -444,7 +482,7 @@ header {
     position:fixed;
     top:0;
     right:-340px;
-    width:320px;
+    width:min(320px,92vw);
     height:100vh;
     background:white;
     box-shadow:-5px 0 20px rgba(0,0,0,.2);
@@ -489,4 +527,144 @@ header {
 #profile-email{
     color:#666;
     font-size:.9rem;
+}
+
+/* ==========================
+      MOBILE VARIABLES
+========================== */
+
+:root{
+
+    --mobile-logo: 1.5rem;
+
+    --mobile-menu: 1.15rem;
+
+    --mobile-dropdown-width: 270px;
+
+    --mobile-dropdown-padding: 18px;
+
+    --mobile-title: 2.8rem;
+
+    --mobile-subtitle: 1.2rem;
+
+    --mobile-button-font: 1rem;
+
+    --mobile-button-padding-y: .9rem;
+
+    --mobile-button-padding-x: 2rem;
+
+}
+
+@media (max-width:768px){
+
+header{
+
+    padding:25px 30px;
+
+}
+
+.logo {
+  font-size:2.5rem;
+}
+
+.navigation{
+
+    gap:10px;
+
+}
+
+#text{
+
+    text-align:center;
+
+    width:90%;
+
+}
+
+#text2{
+
+    margin-top:4rem;
+
+}
+
+#btn{
+
+    margin-top:10rem;
+
+}
+
+.dropdown{
+
+    right:20px;
+
+    top:120px;
+
+}
+
+#text {
+  position: absolute;
+  font-size:4rem;
+  color: white;
+  text-shadow: 2px 4px 6px black
+}
+
+#text2 {
+  position: absolute;
+  margin-top: 5.5rem;
+  font-size: 1.5rem;
+  text-align:center;
+  width:90%;
+  color: white;
+  text-shadow: 2px 4px 6px black
+}
+
+#btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.7rem 1.5rem;
+  margin-top: 13rem;
+  color: white;
+  border-radius: 10px;
+  font-size: 1.7rem;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
+}
+
+}
+
+@media (max-width:480px){
+
+header{
+
+    padding:12px 15px;
+
+}
+
+.logo{
+
+    font-size:1.4rem;
+
+}
+
+#text{
+
+    font-size:2.4rem;
+
+}
+
+#text2{
+
+    font-size:1rem;
+
+}
+
+#btn{
+
+    padding:
+
+    .75rem
+    1.5rem;
+
+}
+
 }

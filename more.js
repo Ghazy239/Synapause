@@ -31,9 +31,9 @@ window.addEventListener("click", (e) => {
 const signUp = document.getElementById("sign-up");
 const loginOverlay = document.getElementById("login-overlay");
 const closeLogin = document.getElementById("close-login");
+const mobileSignUp = document.getElementById("mobile-signup");
 
 signUp.addEventListener("click",()=>{
-
     const user = JSON.parse(
         localStorage.getItem("synapauseUser")
     );
@@ -47,6 +47,11 @@ signUp.addEventListener("click",()=>{
     else{
         loginOverlay.classList.add("show");
     }
+});
+
+mobileSignUp.addEventListener("click",(e)=>{
+    e.preventDefault();
+    signUp.click();
 });
 
 closeLogin.addEventListener("click", () => {
@@ -518,10 +523,12 @@ function updateNavbar(){
 
     if(user){
         signUp.textContent = user.username;
+        mobileSignUp.textContent = user.username;
     }
 
     else{
         signUp.textContent = "Sign Up";
+        mobileSignUp.textContent = "Sign Up";
     }
 }
 
@@ -540,6 +547,10 @@ window.addEventListener("click",(e)=>{
         &&
 
         e.target!==signUp
+
+        &&
+
+        e.target!==mobileSignUp
 
     ){
 
