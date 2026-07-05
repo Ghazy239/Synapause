@@ -93,8 +93,6 @@ async function createOverlay(){
 
     overlay.innerHTML = html;
 
-    document.body.appendChild(overlay);
-
     await startSession();
 
     await loadQuestions();
@@ -103,7 +101,11 @@ async function createOverlay(){
 
     loadQuestion(overlay);
 
+    document.body.appendChild(overlay);
+
     bindAnswerButtons(overlay);
+
+    startQuizTimer();
 
     document.body.style.overflow ="hidden";
     document.documentElement.style.pointerEvents ="none";
@@ -151,9 +153,53 @@ let questionStartTime = 0;
 
 let currentQuestion = 0;
 
-questionStartTime = Date.now();
+let quizSeconds = 30;
+
+let quizCountdown;
+
+let isPaused = false;
+
+function startQuizTimer(){
+    const timer =
+    document.getElementById(
+        "quiz-timer"
+    );
+
+    quizSeconds = 30;
+
+    timer.textContent =
+    "00:30";
+
+    clearInterval(quizCountdown);
+
+    quizCountdown =
+    setInterval(()=>{
+        if(isPaused){
+            return;
+        }
+
+        quizSeconds--;
+
+        timer.textContent =
+        "00:" +
+        String(quizSeconds)
+        .padStart(2,"0");
+
+        if(quizSeconds<=0){
+            clearInterval(
+                quizCountdown
+            );
+
+            alert(
+                "Time's Up!"
+            );
+        }
+    },1000);
+}
 
 function loadQuestion(root){
+    questionStartTime = Date.now();
+
     const feedbackBox=
     root.querySelector(
         "#feedback-box"
@@ -304,6 +350,32 @@ async function loadQuestions(){
     }
 }
 
+async function loadReplacementQuestion(){
+    const q =
+    questions[currentQuestion];
+
+    const url =
+    NEXT_QUESTION_API +
+    "?action=getNextQuestion" +
+    "&userId=" + USER_ID +
+    "&category=" + q.category +
+    "&currentQuestionId=" + q.id;
+
+    const response =
+    await fetch(url);
+
+    const result =
+    await response.json();
+
+    questions[currentQuestion] =
+    result.question;
+
+    console.log(
+        "Replacement Question",
+        result.question
+    );
+}
+
 async function startSession(){
     const response = await fetch(
         ANALYTICS_API,{
@@ -409,6 +481,8 @@ function checkAnswer(root,selected){
         "#feedback-title"
     );
 
+    isPaused = true;
+
     buttons.forEach(btn=>{
         btn.disabled=true;
     });
@@ -441,35 +515,51 @@ function checkAnswer(root,selected){
         isCorrect
     ).catch(console.error);
 
-    setTimeout(()=>{
+    setTimeout(async()=>{
         feedbackBox.style.display=
         "none";
 
-        nextQuestion(root);
+        await nextQuestion(root, isCorrect);
     },1800);
 }
 
-function nextQuestion(root){
-    currentQuestion++;
-
-    if(currentQuestion>=questions.length){
-        finishQuiz(root);
-        return;
+async function nextQuestion(
+    root,
+    isCorrect
+){
+    if(isCorrect){
+        currentQuestion++;
     }
 
-    loadQuestion(root);
+    else{
+        await loadReplacementQuestion();
+    }
 
-    const buttons=
-    root.querySelectorAll(".answer-btn");
+    if(
+        currentQuestion<
+        questions.length
+    ){
+        isPaused = false;
+        loadQuestion(root);
 
-    buttons.forEach(btn=>{
-        btn.disabled=false;
-
-        btn.classList.remove(
-            "correct",
-            "wrong"
+        const buttons =
+        root.querySelectorAll(
+            ".answer-btn"
         );
-    });
+
+        buttons.forEach(btn=>{
+            btn.disabled = false;
+
+            btn.classList.remove(
+                "correct",
+                "wrong"
+            );
+        });
+    }
+
+    else{
+        finishQuiz(root);
+    }
 }
 
 async function saveAnswer(
@@ -531,6 +621,8 @@ async function saveAnswer(
 }
 
 async function finishQuiz(root){
+    clearInterval(quizCountdown);
+
     await finishSession();
 
     document.body.style.overflow = "";
@@ -538,6 +630,10 @@ async function finishQuiz(root){
     document.documentElement.style.pointerEvents = "";
 
     root.remove();
+
+    chrome.runtime.sendMessage({
+        action:"restartTimer"
+    });
 
     console.log(
         "Quiz Finished"

@@ -189,3 +189,15 @@ chrome.tabs.onRemoved.addListener(async(tabId) => {
         console.log("SESSION ENDED");
     }
 });
+
+chrome.runtime.onMessage.addListener(
+(message)=>{
+    if(
+        message.action===
+        "restartTimer"
+    ){
+        resetTimer();
+        startTimer();
+        console.log("Timer Restarted");
+    }
+});
