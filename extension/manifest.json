@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "Synapause",
+  "description": "Lorem Ipsum Dolor Sit Amet.",
+  "version": "1.0.0",
+
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+
+  "action": {
+    "default_title": "Synapause",
+    "default_popup": "popup.html"
+  },
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "permissions": [
+    "storage",
+    "alarms",
+    "tabs",
+    "notifications",
+    "webNavigation",
+    "activeTab"
+  ],
+
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
+  "web_accessible_resources":[
+      {
+        "resources":["overlay/*"],
+        "matches":["<all_urls>"]
+      }
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://youtube.com/*",
+        "*://*.youtube.com/*",
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
+        "*://tiktok.com/*",
+        "*://*.tiktok.com/*",
+        "https://ghazy239.github.io/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

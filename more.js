@@ -483,6 +483,15 @@ async function loginUser(){
 
         }));
 
+        window.postMessage({
+            type:"SYNAPAUSE_LOGIN",
+            user:{
+                username:result.username,
+                email:result.email,
+                id:result.id
+            }
+        },"*");
+
         updateNavbar();
 
           alert("Login berhasil.");

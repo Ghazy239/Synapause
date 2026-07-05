@@ -509,6 +509,15 @@ async function loadQuestions(){
         const result =
         await response.json();
 
+        console.log("========== RESULT ==========");
+        console.log(result);
+
+        console.log("========== QUESTIONS ==========");
+        console.log(result.questions);
+
+        console.log("========== FIRST QUESTION ==========");
+        console.log(result.questions[0]);
+
         questions =
         result.questions;
 
@@ -523,7 +532,6 @@ async function loadQuestions(){
             error
         );
     }
-
 }
 
 async function startSession(){
@@ -541,6 +549,9 @@ async function startSession(){
     const result =
     await response.json();
 
+    console.log("========== SESSION ==========");
+    console.log(result);
+
     SESSION_ID =
     result.sessionId;
 
@@ -553,6 +564,7 @@ async function startSession(){
 async function finishSession(){
     if(!SESSION_ID) return;
 
+    const response =
     await fetch(
         ANALYTICS_API,{
             method:"POST",
@@ -563,6 +575,12 @@ async function finishSession(){
             })
         }
     );
+
+    const result =
+    await response.json();
+
+    console.log("========== FINISH ==========");
+    console.log(result);
 }
 
 async function saveAnswer(question, selected, isCorrect){
@@ -570,6 +588,7 @@ async function saveAnswer(question, selected, isCorrect){
     Date.now() -
     questionStartTime;
 
+    const response =
     await fetch(
         ANALYTICS_API,{
             method:"POST",
@@ -588,6 +607,12 @@ async function saveAnswer(question, selected, isCorrect){
             })
         }
     );
+    
+    const result =
+    await response.json();
+
+    console.log("========== SAVE ANSWER ==========");
+    console.log(result);
 }
 
 startFeedTimer();
