@@ -34,29 +34,28 @@ window.addEventListener(
 chrome.storage.local.get(
     "synapauseUser",
     (result)=>{
+        const user =
+        result.synapauseUser;
+
         console.log(
             "Current Extension User:"
         );
 
-        console.log(
-            result.synapauseUser
-        );
+        console.log(user);
+
+        if(user){
+            USER_ID = user.id;
+        }
     }
 );
-
-console.log(user);
-
-const USER_ID =
-user.id;
-
-const QUESTION_API =
-`https://script.google.com/macros/s/AKfycby68KOeiPvpNscnSwTqtZa18eLCxLOsZLCSNaYEnJa7py1g9poZrDP4IT5jGKh0_nD0/exec?action=getQuiz&userId=${USER_ID}`;
 
 const NEXT_QUESTION_API =
 "https://script.google.com/macros/s/AKfycby68KOeiPvpNscnSwTqtZa18eLCxLOsZLCSNaYEnJa7py1g9poZrDP4IT5jGKh0_nD0/exec";
 
 const ANALYTICS_API =
 "https://script.google.com/macros/s/AKfycbzDvygssssnKnU79C_MYw9ozTz5xdvq5AE4HgmyMkwIGi9YBYRIfVsTNjyfzLYczR6y/exec";
+
+let USER_ID = "";
 
 chrome.runtime.onMessage.addListener(
 (message)=>{
@@ -152,6 +151,8 @@ let questionStartTime = 0;
 
 let currentQuestion = 0;
 
+questionStartTime = Date.now();
+
 function loadQuestion(root){
     const feedbackBox=
     root.querySelector(
@@ -174,24 +175,105 @@ function loadQuestion(root){
     ).textContent=
     q.question;
 
-    const texts=
+    const answerTexts =
     root.querySelectorAll(
         ".answer-text"
     );
 
-    texts.forEach(
-        (text,index)=>{
-            text.textContent=
-            q.answers[index];
-        }
+    const answerImages =
+    root.querySelectorAll(
+        ".answer-image"
     );
+
+    const answers =
+    root.querySelector(
+        "#answers"
+    );
+
+    const questionImage =
+    root.querySelector(
+        "#question-image"
+    );
+
+    if(q.questionImage){
+        questionImage.src =
+        q.questionImage;
+
+        questionImage.style.display =
+        "block";
+    }
+
+    else{
+        questionImage.style.display =
+        "none";
+    }
+
+    const options=[
+        {
+            text:q.optionA,
+            image:q.imageA
+        },
+        {
+            text:q.optionB,
+            image:q.imageB
+        },
+        {
+            text:q.optionC,
+            image:q.imageC
+        },
+        {
+            text:q.optionD,
+            image:q.imageD
+        }
+    ];
+
+    const isVisual =
+    q.category==="Visual";
+
+    if(isVisual){
+        answers.classList.add(
+            "grid"
+        );
+    }
+
+    else{
+        answers.classList.remove(
+            "grid"
+        );
+    }
+
+    options.forEach(
+    (option,index)=>{
+        if(isVisual){
+            answerTexts[index]
+            .style.display="none";
+
+            answerImages[index]
+            .src=option.image;
+
+            answerImages[index]
+            .style.display="block";
+        }
+
+        else{
+            answerImages[index]
+            .style.display="none";
+
+            answerTexts[index]
+            .style.display="block";
+
+            answerTexts[index]
+            .textContent=
+            option.text;
+        }
+    });
 }
 
 async function loadQuestions(){
     try{
         const response =
         await fetch(
-            QUESTION_API
+            `https://script.google.com/macros/s/AKfycby68KOeiPvpNscnSwTqtZa18eLCxLOsZLCSNaYEnJa7py1g9poZrDP4IT5jGKh0_nD0/exec?action=getQuiz&userId=${USER_ID}`
         );
 
         const result =
@@ -249,6 +331,35 @@ async function startSession(){
     );
 }
 
+async function finishSession(){
+    if(!SESSION_ID){
+        return;
+    }
+
+    const response =
+    await fetch(
+        ANALYTICS_API,{
+            method:"POST",
+
+            body:new URLSearchParams({
+                action:"finishSession",
+
+                sessionId:
+                SESSION_ID
+            })
+        }
+    );
+
+    const result =
+    await response.json();
+
+    console.log(
+        "========== FINISH =========="
+    );
+
+    console.log(result);
+}
+
 function bindAnswerButtons(root){
     const buttons =
     root.querySelectorAll(
@@ -282,6 +393,12 @@ function checkAnswer(root,selected){
     ["A","B","C","D"]
     .indexOf(correct);
 
+    const selectedAnswer =
+    ["A","B","C","D"][selected];
+
+    const isCorrect =
+    selectedAnswer===correct;
+
     const feedbackBox =
     root.querySelector(
         "#feedback-box"
@@ -310,16 +427,19 @@ function checkAnswer(root,selected){
     else{
         buttons[selected]
         .classList.add("wrong");
-
         buttons[correctIndex]
         .classList.add("correct");
 
         console.log("Wrong");
-
         feedbackTitle.textContent ="Incorrect!";
-
         feedbackBox.style.display="block";
     }
+
+    saveAnswer(
+        questions[currentQuestion],
+        selectedAnswer,
+        isCorrect
+    ).catch(console.error);
 
     setTimeout(()=>{
         feedbackBox.style.display=
@@ -332,8 +452,8 @@ function checkAnswer(root,selected){
 function nextQuestion(root){
     currentQuestion++;
 
-    if(currentQuestion>=backupquestions.length){
-        console.log("Quiz Finished");
+    if(currentQuestion>=questions.length){
+        finishQuiz(root);
         return;
     }
 
@@ -350,6 +470,78 @@ function nextQuestion(root){
             "wrong"
         );
     });
+}
+
+async function saveAnswer(
+    question,
+    selected,
+    isCorrect
+){
+    const responseTime =
+    Date.now() -
+    questionStartTime;
+
+    const response =
+    await fetch(
+        ANALYTICS_API,{
+            method:"POST",
+
+            body:new URLSearchParams({
+
+                action:"saveAnswer",
+
+                sessionId:
+                SESSION_ID,
+
+                userId:
+                USER_ID,
+
+                questionId:
+                question.id,
+
+                category:
+                question.category,
+
+                selectedAnswer:
+                selected,
+
+                correctAnswer:
+                question.answer,
+
+                isCorrect:
+                isCorrect,
+
+                responseTimeMS:
+                responseTime,
+
+                isReplacement:
+                !isCorrect
+            })
+        }
+    );
+
+    const result =
+    await response.json();
+
+    console.log(
+        "========== SAVE ANSWER =========="
+    );
+
+    console.log(result);
+}
+
+async function finishQuiz(root){
+    await finishSession();
+
+    document.body.style.overflow = "";
+
+    document.documentElement.style.pointerEvents = "";
+
+    root.remove();
+
+    console.log(
+        "Quiz Finished"
+    );
 }
 
 fetch(
