@@ -4,9 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="settings/settings.css">
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
+    <header class="topbar">
+        <h2 class="logo">Synapause</h2>
+        <button id="profile-btn">Account</button>
+    </header>
+    <div id="profile-panel">
+      <span id="close-profile">&times;</span>
+      <h2>Account</h2>
+      <p id="profile-username">Username</p>
+      <p id="profile-email">Email</p>
+      <hr>
+      <button id="dashboard-btn">Dashboard</button>
+      <button id="settings-btn">Settings</button>
+      <button id="change-username-btn">Change Username</button>
+      <button id="change-email-btn">Change Email</button>
+      <button id="change-password-btn">Change Password</button>
+      <hr>
+      <button id="logout-btn">Logout</button>
+    </div>
+    <div id="settings-overlay">
+      <div id="settings-popup">
+        <span id="close-settings">&times;</span>
+        <h2>Settings</h2>
+        <div class="settings-section">
+          <h3>Appearance</h3>
+          <button id="theme-system">System</button>
+          <button id="theme-light">Light</button>
+          <button id="theme-dark">Dark</button>
+        </div>
+        <hr>
+        <div class="settings-section">
+          <h3>Website Monitoring</h3>
+          <div class="monitor-list">
+            <label class="monitor-item">
+              <img src="assets/icons/youtube.svg">
+              <span>YouTube</span>
+              <input type="checkbox" id="site-youtube">
+            </label>
+            <label class="monitor-item">
+              <img src="assets/icons/instagram.svg">
+              <span>Instagram</span>
+              <input type="checkbox" id="site-instagram">
+            </label>
+            <label class="monitor-item">
+              <img src="assets/icons/tiktok.svg">
+              <span>TikTok</span>
+              <input type="checkbox" id="site-tiktok">
+            </label>
+            <label class="monitor-item">
+              <img src="assets/icons/facebook.svg">
+              <span>Facebook</span>
+              <input type="checkbox" id="site-facebook">
+            </label>
+            <label class="monitor-item">
+              <img src="assets/icons/x.svg">
+              <span>X</span>
+              <input type="checkbox" id="site-x">
+            </label>
+            <label class="monitor-item">
+              <img src="assets/icons/threads.svg">
+              <span>Threads</span>
+              <input type="checkbox" id="site-threads">
+            </label>
+          </div>
+        </div>
+        <hr>
+        <div class="settings-section">
+          <h3>Personalize</h3>
+          <p>Coming Soon</p>
+        </div>
+      </div>
+    </div>
     <div class="dashboard">
         <h1>Brain Dashboard</h1>
         <p id="welcome">Loading...</p>
@@ -138,6 +210,7 @@
         </div>
     </div>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="settings/settings.js"></script>
     <script src="dashboard.js"></script>
 </body>
 </html>

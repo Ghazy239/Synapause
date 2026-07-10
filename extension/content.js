@@ -59,13 +59,76 @@ let USER_ID = "";
 
 chrome.runtime.onMessage.addListener(
 (message)=>{
-    if(
-        message.action===
-        "showOverlay"
-    ){
+    if(message.action==="showOverlay"){
         createOverlay();
     }
+
+    if(message.action==="closeOverlay"){
+        const overlay =
+        document.getElementById(
+            "synapause-overlay"
+        );
+
+        if(overlay){
+            document.body.style.overflow="";
+            document.documentElement.style.pointerEvents="";
+            overlay.remove();
+        }
+    }
+
+    if(message.action==="syncQuizState"){
+        syncQuizState();
+    }
 });
+
+function getQuizState(){
+    return new Promise(resolve=>{
+        chrome.runtime.sendMessage(
+            {action:"getQuizState"},resolve
+        );
+    });
+}
+
+function syncQuizState(){
+    getQuizState().then(state=>{
+        if(!state){
+            return;
+        }
+
+        questions =
+        state.questions;
+        currentQuestion =
+        state.currentQuestion;
+        SESSION_ID =
+        state.SESSION_ID;
+        quizSeconds =
+        state.quizSeconds;
+        questionStartTime =
+        state.questionStartTime;
+        isPaused =
+        state.isPaused;
+
+        const overlay =
+        document.getElementById(
+            "synapause-overlay"
+        );
+
+        if(!overlay){
+            return;
+        }
+
+        loadQuestion(overlay);
+
+        document
+        .getElementById(
+            "quiz-timer"
+        )
+        .textContent =
+        "00:" +
+        String(quizSeconds)
+        .padStart(2,"0");
+    });
+}
 
 async function createOverlay(){
     if(
@@ -93,11 +156,29 @@ async function createOverlay(){
 
     overlay.innerHTML = html;
 
-    await startSession();
+    const savedState = await getQuizState();
 
-    await loadQuestions();
+    if(savedState){
+        questions =
+        savedState.questions;
+        currentQuestion =
+        savedState.currentQuestion;
+        SESSION_ID =
+        savedState.SESSION_ID;
+        quizSeconds =
+        savedState.quizSeconds;
+        questionStartTime =
+        savedState.questionStartTime;
+        isPaused =
+        savedState.isPaused;
+    }
 
-    currentQuestion = 0;
+    else{
+        await startSession();
+        await loadQuestions();
+        await saveQuizState();
+        currentQuestion = 0;
+    }
 
     loadQuestion(overlay);
 
@@ -159,16 +240,35 @@ let quizCountdown;
 
 let isPaused = false;
 
+async function saveQuizState(){
+    chrome.runtime.sendMessage({
+        action:"saveQuizState",
+
+        state:{
+            questions,
+            currentQuestion,
+            SESSION_ID,
+            quizSeconds,
+            questionStartTime,
+            isPaused
+        }
+    });
+}
+
 function startQuizTimer(){
     const timer =
     document.getElementById(
         "quiz-timer"
     );
 
-    quizSeconds = 30;
+    if(quizSeconds<=0){
+        quizSeconds = 30;
+    }
 
     timer.textContent =
-    "00:30";
+    "00:" +
+    String(quizSeconds)
+    .padStart(2,"0");
 
     clearInterval(quizCountdown);
 
@@ -179,6 +279,7 @@ function startQuizTimer(){
         }
 
         quizSeconds--;
+        saveQuizState();
 
         timer.textContent =
         "00:" +
@@ -482,6 +583,7 @@ function checkAnswer(root,selected){
     );
 
     isPaused = true;
+    saveQuizState();
 
     buttons.forEach(btn=>{
         btn.disabled=true;
@@ -540,7 +642,9 @@ async function nextQuestion(
         questions.length
     ){
         isPaused = false;
+        saveQuizState();
         loadQuestion(root);
+        await saveQuizState();
 
         const buttons =
         root.querySelectorAll(
@@ -630,6 +734,10 @@ async function finishQuiz(root){
     document.documentElement.style.pointerEvents = "";
 
     root.remove();
+
+    chrome.runtime.sendMessage({
+        action:"clearQuizState"
+    });
 
     chrome.runtime.sendMessage({
         action:"restartTimer"

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Synapause</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="settings/settings.css" />
 </head>
 
 <body>
@@ -13,11 +14,98 @@
     <h2 class="logo">Synapause</h2>
     <nav class="navigation">
       <div class="menu desktop-menu">
-        <a href="home.html" class="active">Home<span></span></a>
-        <a href="#">Contact Us<span></span></a>
-        <a href="#" class="sign-up" id="sign-up">Sign Up<span></span></a>
+        <a href="home.html" class="active">Home</a>
+        <a href="#">Contact Us</a>
+        <a href="#" class="sign-up" id="sign-up">Sign Up</a>
       </div>
-      <a class="menu-icon" id="menu-icon">☰<span></span></a>
+      <a class="menu-icon" id="menu-icon">☰</a>
+    </nav>
+    <div id="profile-panel">
+      <span id="close-profile">&times;</span>
+      <h2>Account</h2>
+      <p id="profile-username">Username</p>
+      <p id="profile-email">Email</p>
+      <hr>
+      <button id="dashboard-btn">Dashboard</button>
+      <button id="settings-btn">Settings</button>
+      <button id="change-username-btn">Change Username</button>
+      <button id="change-email-btn">Change Email</button>
+      <button id="change-password-btn">Change Password</button>
+      <hr>
+      <button id="logout-btn">Logout</button>
+    </div>
+  </header>
+  <div id="dropdown" class="dropdown">
+    <div class="menu mobile-menu">
+      <a href="home.html" class="active">Home</a>
+      <a href="#">Contact Us</a>
+      <a href="#" id="mobile-signup">Sign Up</a>
+      <div id="creatusest">
+        <div class="ecms" id="char-1">
+          <a href="home2.html"><img src="assets/sicmundus.png" /><span></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <section class="parallax">
+    <h2 id="text">SYNAPAUSE</h2>
+    <p id="text2">Train your focus. Strengthen your cognition. Build healthier digital habits through adaptive brain challenges.</p>
+    <a href="feed.html" id="btn">Explore More</a>
+  </section>
+    <div id="settings-overlay">
+      <div id="settings-popup">
+        <span id="close-settings">&times;</span>
+        <h2>Settings</h2>
+        <div class="settings-section">
+          <h3>Appearance</h3>
+          <button id="theme-system">System</button>
+          <button id="theme-light">Light</button>
+          <button id="theme-dark">Dark</button>
+        </div>
+        <hr>
+        <div class="settings-section">
+          <h3>Website Monitoring</h3>
+          <div class="monitor-list">
+            <label class="monitor-item">
+              <img src="assets/icons/youtube.svg">
+              <span>YouTube</span>
+              <input type="checkbox" id="site-youtube">
+            </label>
+            <label class="monitor-item">
+              <img src="assets/icons/instagram.svg">
+              <span>Instagram</span>
+              <input type="checkbox" id="site-instagram">
+            </label>
+            <label class="monitor-item">
+              <img src="assets/icons/tiktok.svg">
+              <span>TikTok</span>
+              <input type="checkbox" id="site-tiktok">
+            </label>
+            <label class="monitor-item">
+              <img src="assets/icons/facebook.svg">
+              <span>Facebook</span>
+              <input type="checkbox" id="site-facebook">
+            </label>
+            <label class="monitor-item">
+              <img src="assets/icons/x.svg">
+              <span>X</span>
+              <input type="checkbox" id="site-x">
+            </label>
+            <label class="monitor-item">
+              <img src="assets/icons/threads.svg">
+              <span>Threads</span>
+              <input type="checkbox" id="site-threads">
+            </label>
+          </div>
+        </div>
+        <hr>
+        <div class="settings-section">
+          <h3>Personalize</h3>
+          <p>Coming Soon</p>
+        </div>
+      </div>
+    </div>
       <div id="login-overlay">
         <div id="login-popup">
           <span id="close-login">&times;</span>
@@ -76,39 +164,7 @@
           </p>
         </div>
       </div>
-    </nav>
-    <div id="profile-panel">
-      <span id="close-profile">&times;</span>
-      <h2>Account</h2>
-      <p id="profile-username">Username</p>
-      <p id="profile-email">Email</p>
-      <hr>
-      <button id="dashboard-btn">Dashboard</button>
-      <button id="change-username-btn">Change Username</button>
-      <button id="change-email-btn">Change Email</button>
-      <button id="change-password-btn">Change Password</button>
-      <hr>
-      <button id="logout-btn">Logout</button>
-    </div>
-  </header>
-  <div id="dropdown" class="dropdown">
-    <div class="menu mobile-menu">
-      <a href="home.html" class="active">Home<span></span></a>
-      <a href="#">Contact Us<span></span></a>
-      <a href="#" id="mobile-signup">Sign Up<span></span></a>
-      <div id="creatusest">
-        <div class="ecms" id="char-1">
-          <a href="home2.html"><img src="assets/sicmundus.png" /><span></span></a>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <section class="parallax">
-    <h2 id="text">SYNAPAUSE</h2>
-    <p id="text2">Cognitive Awakening Quiz</p>
-    <a href="feed.html" id="btn">Explore More</a>
-  </section>
-<script src="more.js"></script>
+  <script src="settings/settings.js"></script>
+  <script src="more.js"></script>
 </body>
 </html>

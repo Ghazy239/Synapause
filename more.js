@@ -91,6 +91,10 @@ const loginBtn = document.getElementById("login-btn");
 const profilePanel = document.getElementById("profile-panel");
 const closeProfile = document.getElementById("close-profile");
 
+const themeSystem = document.getElementById("theme-system");
+const themeLight = document.getElementById("theme-light");
+const themeDark = document.getElementById("theme-dark");
+
 const changeUsernameBtn =
 document.getElementById("change-username-btn");
 
@@ -103,6 +107,15 @@ document.getElementById("change-password-btn");
 const dashboardBtn =
 document.getElementById("dashboard-btn");
 
+const settingsBtn =
+document.getElementById("settings-btn");
+
+const settingsOverlay =
+document.getElementById("settings-overlay");
+
+const closeSettings =
+document.getElementById("close-settings");
+
 const logoutBtn = document.getElementById("logout-btn");
 
 const profileUsername =
@@ -111,12 +124,33 @@ document.getElementById("profile-username");
 const profileEmail =
 document.getElementById("profile-email");
 
+themeSystem.addEventListener("click",()=>{
+    saveTheme("system");
+});
+
+themeLight.addEventListener("click",()=>{
+    saveTheme("light");
+});
+
+themeDark.addEventListener("click",()=>{
+    saveTheme("dark");
+});
+
 closeProfile.addEventListener("click",()=>{
     profilePanel.classList.remove("show");
 });
 
+closeSettings.addEventListener("click",()=>{
+    settingsOverlay.classList.remove("show");
+});
+
 dashboardBtn.addEventListener("click",()=>{
     location.href="dashboard.html";
+});
+
+settingsBtn.addEventListener("click",()=>{
+    profilePanel.classList.remove("show");
+    settingsOverlay.classList.add("show");
 });
 
 logoutBtn.addEventListener("click",()=>{
@@ -567,4 +601,10 @@ window.addEventListener("click",(e)=>{
 
     }
 
+});
+
+settingsOverlay.addEventListener("click",e=>{
+    if(e.target===settingsOverlay){
+        settingsOverlay.classList.remove("show");
+    }
 });
