@@ -2,14 +2,38 @@ chrome.runtime.onInstalled.addListener(() => {
     console.log("Synapause Installed");
 });
 
-const monitoredSites = [
-    "instagram.com",
-    "tiktok.com",
-    "youtube.com",
-    "facebook.com",
-    "x.com",
-    "threads.net"
-];
+let monitoredSites = [];
+
+const SITE_MAP = {
+    youtube: "youtube.com",
+    instagram: "instagram.com",
+    tiktok: "tiktok.com",
+    facebook: "facebook.com",
+    x: "x.com",
+    threads: "threads.net"
+};
+
+loadMonitoredSites();
+
+function loadMonitoredSites(){
+    chrome.storage.local.get(
+        "synapauseSites",
+        result=>{
+            const saved =
+            result.synapauseSites || {};
+
+            monitoredSites =
+            Object.keys(saved)
+            .filter(site=>saved[site])
+            .map(site=>SITE_MAP[site]);
+
+            console.log(
+                "Monitored Sites:",
+                monitoredSites
+            );
+        }
+    );
+}
 
 let session = {
     active: false,
@@ -280,4 +304,34 @@ chrome.runtime.onMessage.addListener(
         startTimer();
         console.log("Timer Restarted");
     }
+});
+
+chrome.runtime.onMessageExternal.addListener(
+(message, sender, sendResponse)=>{
+    if(message.action==="updateMonitoredSites"){
+        monitoredSites = message.sites;
+
+        console.log(
+            "Monitored Sites Updated:",
+            monitoredSites
+        );
+
+        sendResponse({
+            success:true
+        });
+    }
+    return true;
+});
+
+chrome.storage.onChanged.addListener((changes, area) => {
+    if(area !== "local"){
+        return;
+    }
+
+    if(!changes.synapauseSites){
+        return;
+    }
+
+    console.log("Website monitoring updated.");
+    loadMonitoredSites();
 });

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Synapause",
   "description": "Lorem Ipsum Dolor Sit Amet.",
-  "version": "1.1.0",
+  "version": "1.1.1",
 
   "icons": {
     "16": "assets/icon16.png",
@@ -28,6 +28,13 @@
     "webNavigation",
     "activeTab"
   ],
+
+  "externally_connectable": {
+      "matches": [
+          "http://127.0.0.1/*",
+          "https://ghazy239.github.io/Synapause/*"
+      ]
+  },
 
   "host_permissions": [
     "<all_urls>"

@@ -151,10 +151,33 @@ function saveSites(){
         [WEBSITE_KEY]:sites
     });
 
-    storage.get(
-        WEBSITE_KEY,
-        result=>console.log(result)
+    chrome.runtime.sendMessage(
+        "lhmdogbhjmekciofjgeemncldobfegbp",
+        {
+            action:"updateMonitoredSites",
+            sites:Object.keys(sites)
+                .filter(site=>sites[site])
+                .map(site=>({
+                    youtube:"youtube.com",
+                    instagram:"instagram.com",
+                    tiktok:"tiktok.com",
+                    facebook:"facebook.com",
+                    x:"x.com",
+                    threads:"threads.net"
+                })[site])
+        },
+        response=>{
+            console.log(
+                "Extension Response:",
+                response
+            );
+        }
     );
+
+    storage.get(null, result=>{
+        console.log("FULL STORAGE");
+        console.log(result);
+    });
 }
 
 Object.keys(DEFAULT_SITES)
