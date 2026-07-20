@@ -4,37 +4,6 @@ chrome.runtime.onInstalled.addListener(() => {
 
 let monitoredSites = [];
 
-const SITE_MAP = {
-    youtube: "youtube.com",
-    instagram: "instagram.com",
-    tiktok: "tiktok.com",
-    facebook: "facebook.com",
-    x: "x.com",
-    threads: "threads.net"
-};
-
-loadMonitoredSites();
-
-function loadMonitoredSites(){
-    chrome.storage.local.get(
-        "synapauseSites",
-        result=>{
-            const saved =
-            result.synapauseSites || {};
-
-            monitoredSites =
-            Object.keys(saved)
-            .filter(site=>saved[site])
-            .map(site=>SITE_MAP[site]);
-
-            console.log(
-                "Monitored Sites:",
-                monitoredSites
-            );
-        }
-    );
-}
-
 let session = {
     active: false,
     tabId: null,
@@ -73,7 +42,7 @@ function startTimer(){
             timer.seconds
         );
 
-        if(timer.seconds>=900){
+        if(timer.seconds>=15){
             clearInterval(timer.interval);
             timer.running=false;
             quizRequired=true;
@@ -321,17 +290,4 @@ chrome.runtime.onMessageExternal.addListener(
         });
     }
     return true;
-});
-
-chrome.storage.onChanged.addListener((changes, area) => {
-    if(area !== "local"){
-        return;
-    }
-
-    if(!changes.synapauseSites){
-        return;
-    }
-
-    console.log("Website monitoring updated.");
-    loadMonitoredSites();
 });

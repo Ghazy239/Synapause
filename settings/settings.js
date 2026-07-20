@@ -102,21 +102,68 @@ console.log("LOAD SITES");
 function loadSites(){
     storage.get(
         WEBSITE_KEY,
-
         result=>{
-            const sites = {
-                ...DEFAULT_SITES,
-                ...(result[WEBSITE_KEY] || {})
-            };
+            let sites =
+            result[WEBSITE_KEY];
+
+            if(!sites){
+                sites = {
+                    ...DEFAULT_SITES
+                };
+                storage.set({
+                    [WEBSITE_KEY]:sites
+                });
+                console.log(
+                    "Default monitored sites initialized."
+                );
+            }
 
             Object.keys(DEFAULT_SITES)
 
             .forEach(site=>{
                 document.getElementById(
                     "site-"+site
-                ).checked=
+                ).checked =
                 !!sites[site];
             });
+
+            syncSitesToExtension();
+        }
+    );
+}
+
+function syncSitesToExtension(){
+    const sites = {};
+    Object.keys(DEFAULT_SITES)
+
+    .forEach(site=>{
+        sites[site] =
+        document.getElementById(
+            "site-"+site
+        ).checked;
+    });
+
+    chrome.runtime.sendMessage(
+        "lhmdogbhjmekciofjgeemncldobfegbp",
+        {
+            action:"updateMonitoredSites",
+            sites:Object.keys(sites)
+            .filter(site=>sites[site])
+            .map(site=>({
+                youtube:"youtube.com",
+                instagram:"instagram.com",
+                tiktok:"tiktok.com",
+                facebook:"facebook.com",
+                x:"x.com",
+                threads:"threads.net"
+            })[site])
+        },
+
+        response=>{
+            console.log(
+                "Extension Response:",
+                response
+            );
         }
     );
 }
@@ -151,28 +198,7 @@ function saveSites(){
         [WEBSITE_KEY]:sites
     });
 
-    chrome.runtime.sendMessage(
-        "lhmdogbhjmekciofjgeemncldobfegbp",
-        {
-            action:"updateMonitoredSites",
-            sites:Object.keys(sites)
-                .filter(site=>sites[site])
-                .map(site=>({
-                    youtube:"youtube.com",
-                    instagram:"instagram.com",
-                    tiktok:"tiktok.com",
-                    facebook:"facebook.com",
-                    x:"x.com",
-                    threads:"threads.net"
-                })[site])
-        },
-        response=>{
-            console.log(
-                "Extension Response:",
-                response
-            );
-        }
-    );
+    syncSitesToExtension();
 
     storage.get(null, result=>{
         console.log("FULL STORAGE");

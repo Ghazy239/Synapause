@@ -59,6 +59,9 @@ let USER_ID = "";
 
 chrome.runtime.onMessage.addListener(
 (message)=>{
+
+    console.log("MESSAGE RECEIVED:", message);
+
     if(message.action==="showOverlay"){
         createOverlay();
     }
@@ -337,6 +340,11 @@ function loadQuestion(root){
         "#answers"
     );
 
+    const stroopWord =
+    root.querySelector(
+        "#stroop-word"
+    );
+
     const questionImage =
     root.querySelector(
         "#question-image"
@@ -373,6 +381,36 @@ function loadQuestion(root){
             image:q.imageD
         }
     ];
+
+    const isStroop =
+    q.category==="Stroop";
+
+    if(isStroop){
+        stroopWord.textContent =
+        q.targetWord;
+
+        const colorMap = {
+            "Merah":"red",
+            "Hijau":"green",
+            "Biru":"blue",
+            "Kuning":"gold",
+            "Hitam":"black",
+            "Putih":"white",
+            "Ungu":"purple",
+            "Jingga":"orange"
+        };
+
+        stroopWord.style.color =
+        colorMap[q.inkColor] || "white";
+
+        stroopWord.style.display =
+        "block";
+    }
+
+    else{
+        stroopWord.style.display =
+        "none";
+    }
 
     const isVisual =
     q.category==="Visual";

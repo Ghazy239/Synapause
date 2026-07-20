@@ -1,7 +1,29 @@
+:root{
+    --surface:#ffffff;
+    --surface-2:#f8fafc;
+    --text:#111827;
+    --text-secondary:#6b7280;
+    --border:#e5e7eb;
+    --shadow:0 10px 30px rgba(15,23,42,.08);
+    --accent:#2563eb;
+}
+
+[data-theme="dark"]{
+    --surface:#18181b;
+    --surface-2:#27272a;
+    --text:#fafafa;
+    --text-secondary:#a1a1aa;
+    --border:#3f3f46;
+    --shadow:0 10px 35px rgba(0,0,0,.45);
+    --accent:#3b82f6;
+}
+
 #synapause-overlay{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.65);
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -13,16 +35,21 @@
     max-width:500px;
     max-height:90vh;
     overflow-y:auto;
-    background:#1b1b1b;
-    color:white;
+    background:var(--surface);
+    color:var(--text);
+    border:1px solid var(--border);
     border-radius:20px;
     padding:30px;
+    box-shadow:var(--shadow);
 }
 
 #quiz-header{
     display:flex;
     justify-content:space-between;
     margin-bottom:25px;
+    color:var(--text-secondary);
+    font-size:14px;
+    font-weight:500;
 }
 
 #question-text{
@@ -39,16 +66,17 @@
 .answer-btn{
     width:100%;
     padding:15px;
-    border:none;
+    border:1px solid var(--border);
     border-radius:12px;
     cursor:pointer;
-    background:#333;
-    color:white;
+    background:var(--surface-2);
+    color:var(--text);
     transition:.2s;
 }
 
 .answer-btn:hover{
-    background:#555;
+    border-color:var(--accent);
+    transform:translateY(-1px);
 }
 
 .answer-btn.correct{
@@ -104,12 +132,22 @@
     gap:15px;
 }
 
+#stroop-word{
+    display:none;
+    font-size:48px;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:20px;
+    user-select:none;
+}
+
 #feedback-box{
     display:none;
     margin-top:20px;
     padding:18px;
     border-radius:12px;
-    background:#262626;
+    background:var(--surface-2);
+    border:1px solid var(--border);
 }
 
 #feedback-title{
@@ -118,6 +156,6 @@
 }
 
 #feedback-text{
-    opacity:.9;
+    color:var(--text-secondary);
     line-height:1.5;
 }

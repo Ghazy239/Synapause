@@ -170,6 +170,15 @@ body{
     gap:15px;
 }
 
+#stroop-word{
+    display:none;
+    font-size:48px;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:20px;
+    user-select:none;
+}
+
 #feedback-box{
     display:none;
     margin-top:20px;

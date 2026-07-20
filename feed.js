@@ -160,6 +160,11 @@ function loadQuestion(){
         );
     });
 
+    const stroopWord =
+    document.getElementById(
+        "stroop-word"
+    );
+
     const questionImage =
     document.getElementById(
         "question-image"
@@ -221,6 +226,36 @@ function loadQuestion(){
             image:q.imageD
         }
     ];
+
+    const isStroop =
+    q.category === "Stroop";
+
+    if(isStroop){
+        stroopWord.textContent =
+        q.targetWord;
+
+    const colorMap = {
+        "Merah":"red",
+        "Hijau":"green",
+        "Biru":"blue",
+        "Kuning":"gold",
+        "Hitam":"black",
+        "Putih":"white",
+        "Ungu":"purple",
+        "Jingga":"orange"
+    };
+
+    stroopWord.style.color =
+    colorMap[q.inkColor] || "white";
+
+        stroopWord.style.display =
+        "block";
+    }
+
+    else{
+        stroopWord.style.display =
+        "none";
+    }
 
     const isVisual =
     q.category === "Visual";

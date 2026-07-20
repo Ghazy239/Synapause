@@ -677,12 +677,6 @@ header{
     width:94vw;
     padding:24px;
 }
-
-#profile-panel{
-    width:100%;
-    max-width:none;
-    padding:24px;
-}
 }
 
 [data-theme="dark"]{
