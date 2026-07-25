@@ -21,7 +21,11 @@
 #synapause-overlay{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.55);
+    background:
+    linear-gradient(
+    rgba(15,23,42,.58),
+    rgba(15,23,42,.50)
+    );
     backdrop-filter:blur(8px);
     -webkit-backdrop-filter:blur(8px);
     display:flex;
@@ -158,4 +162,222 @@
 #feedback-text{
     color:var(--text-secondary);
     line-height:1.5;
+}
+
+
+/* ==========================
+   HALO HASAN v2
+========================== */
+#halo-box{
+    width:min(86vw,460px);
+    min-height:unset;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:36px 34px;
+    background:
+    linear-gradient(
+        180deg,
+        #ffffff,
+        #fbfcff
+    );
+    color:var(--text);
+    border:1px solid rgba(255,255,255,.45);
+    border-radius:26px;
+    box-shadow:
+        0 35px 90px rgba(0,0,0,.28),
+        inset 0 1px rgba(255,255,255,.7);
+    animation:haloFade .45s cubic-bezier(.2,.8,.2,1);
+}
+
+[data-theme="dark"] #halo-box{
+    background:
+    linear-gradient(
+        180deg,
+        #252528,
+        #18181b
+    );
+    border:1px solid rgba(255,255,255,.05);
+}
+
+.halo-content{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+/* ---------------- */
+
+.halo-icon{
+    width:72px;
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:
+    radial-gradient(
+        circle,
+        rgba(59,130,246,.18),
+        rgba(59,130,246,.08)
+    );
+    font-size:34px;
+    margin-bottom:20px;
+    position:relative;
+}
+
+.halo-icon::after{
+    content:"";
+    position:absolute;
+    inset:-12px;
+    border-radius:50%;
+    border:1px solid rgba(37,99,235,.08);
+}
+
+/* ---------------- */
+
+#halo-title{
+    margin:0;
+    font-size:28px;
+    font-weight:800;
+    letter-spacing:-1px;
+    line-height:1;
+}
+
+#halo-title span{
+    color:var(--accent);
+}
+
+/* ---------------- */
+
+.halo-divider{
+    width:100%;
+    height:1px;
+    background:var(--border);
+    margin:24px 0;
+    position:relative;
+}
+
+.halo-divider::after{
+    content:"❤";
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    background:var(--surface);
+    padding:0 14px;
+    color:var(--accent);
+    font-size:15px;
+}
+
+/* ---------------- */
+
+#halo-lighter{
+    position:relative;
+    margin:0;
+    padding:0 12px;
+    font-size:16px;
+    line-height:1.7;
+    font-weight:500;
+    font-style:italic;
+    text-align:center;
+}
+
+#halo-lighter::before{
+    content:"“";
+    position:absolute;
+    left:-8px;
+    top:-8px;
+    font-size:38px;
+    color:rgba(37,99,235,.7);
+}
+
+#halo-lighter::after{
+    content:"”";
+    position:absolute;
+    right:-8px;
+    bottom:-50px;
+    font-size:38px;
+    color:rgba(37,99,235,.7);
+}
+
+/* ---------------- */
+
+#halo-author{
+    margin-top:20px;
+    color:var(--text-secondary);
+    font-size:14px;
+    font-style:normal;
+    font-weight:500;
+}
+
+/* ---------------- */
+
+#halo-message{
+    margin:0;
+    font-size:15px;
+    line-height:1.6;
+    text-align:center;
+    color:var(--text-secondary);
+}
+
+/* ---------------- */
+
+#continue-btn{
+    width:100%;
+    margin-top:28px;
+    padding:15px;
+    border:none;
+    border-radius:14px;
+    background:
+    linear-gradient(
+        135deg,
+        #3b82f6,
+        #2563eb
+    );
+    color:white;
+    font-size:18px;
+    font-weight:700;
+    cursor:pointer;
+    transition:
+        transform .2s,
+        box-shadow .2s,
+        filter .2s;
+    box-shadow:
+        0 14px 30px rgba(37,99,235,.35);
+}
+
+#continue-btn:hover{
+    transform:
+        translateY(-3px);
+    filter:brightness(1.04);
+    box-shadow:
+        0 22px 45px rgba(37,99,235,.45);
+}
+
+#continue-btn:active{
+    transform:translateY(0);
+}
+
+/* ---------------- */
+
+@keyframes haloFade{
+    from{
+        opacity:0;
+        transform:
+        translateY(22px)
+        scale(.95);
+    }
+
+    to{
+        opacity:1;
+        transform:
+        translateY(0)
+        scale(1);
+    }
+}
+
+#quiz-box {
+    display: none;
 }

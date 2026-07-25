@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="settings/settings.css">
     <link rel="stylesheet" href="dashboard.css">
 </head>
@@ -18,13 +19,13 @@
       <p id="profile-username">Username</p>
       <p id="profile-email">Email</p>
       <hr>
-      <button id="dashboard-btn">Dashboard</button>
+      <button id="home-btn">Home</button>
       <button id="settings-btn">Settings</button>
       <button id="change-username-btn">Change Username</button>
       <button id="change-email-btn">Change Email</button>
       <button id="change-password-btn">Change Password</button>
       <hr>
-      <button id="logout-btn">Logout</button>
+      <button id="logout-dashboard-btn">Logout</button>
     </div>
     <div id="settings-overlay">
       <div id="settings-popup">
@@ -76,6 +77,133 @@
         <div class="settings-section">
           <h3>Personalize</h3>
           <p>Coming Soon</p>
+        </div>
+      </div>
+    </div>
+    <div id="change-overlay">
+      <div id="change-popup">
+        <span id="close-change">&times;</span>
+        <div id="change-username-section" class="change-section">
+          <h2>Change Username</h2>
+          <div id="change-username-step1" class="change-step active">
+            <div class="password-box">
+              <input
+                id="change-username-password"
+                type="password"
+                placeholder="Current Password"
+              >
+              <span
+                class="toggle-password"
+                data-target="change-username-password">
+                👁
+              </span>
+            </div>
+            <button id="change-username-continue">
+              Continue
+            </button>
+          </div>
+          <div id="change-username-step2" class="change-step">
+            <input
+              id="change-username-input"
+              type="text"
+              placeholder="New Username"
+            >
+            <button id="change-username-save">
+              Save Username
+            </button>
+          </div>
+        </div>
+        <div id="change-email-section" class="change-section">
+          <h2>Change Email</h2>
+          <div id="change-email-step1" class="change-step active">
+            <div class="password-box">
+              <input
+                id="change-email-password"
+                type="password"
+                placeholder="Current Password"
+              >
+              <span
+                class="toggle-password"
+                data-target="change-email-password">
+                👁
+              </span>
+            </div>
+            <button id="change-email-continue">
+              Continue
+            </button>
+          </div>
+          <div id="change-email-step2" class="change-step">
+            <input
+              id="change-email-input"
+              type="email"
+              placeholder="New Email"
+            >
+            <button id="change-email-send">
+              Send OTP
+            </button>
+          </div>
+          <div id="change-email-step3" class="change-step">
+            <input
+              id="change-email-otp"
+              type="text"
+              maxlength="6"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              placeholder="Verification Code"
+            >
+            <button id="change-email-verify">
+              Verify OTP
+            </button>
+          </div>
+        </div>
+        <div id="change-password-section" class="change-section">
+          <h2>Change Password</h2>
+          <div id="change-password-step1" class="change-step active">
+            <div class="password-box">
+              <input
+                id="change-old-password"
+                type="password"
+                placeholder="Current Password"
+                >
+              <span
+                class="toggle-password"
+                data-target="change-old-password">
+                👁
+              </span>
+            </div>
+            <button id="change-password-continue">
+              Continue
+            </button>
+          </div>
+          <div id="change-password-step2" class="change-step">
+            <div class="password-box">
+              <input
+                id="change-new-password"
+                type="password"
+                placeholder="New Password"
+                >
+              <span
+                class="toggle-password"
+                data-target="change-new-password">
+                👁
+              </span>
+            </div>
+            <div class="password-box">
+              <input
+                id="change-confirm-password"
+                type="password"
+                placeholder="Confirm Password">
+              <span
+                class="toggle-password"
+                data-target="change-confirm-password">
+                👁
+              </span>
+            </div>
+            <small id="change-password-warning"></small>
+            <button id="change-password-save">
+              Save Password
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -209,8 +337,13 @@
             </div>
         </div>
     </div>
+    <div id="toast"></div>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="settings/settings.js"></script>
-    <script src="dashboard.js"></script>
+    <script src="javascript/profile.js"></script>
+    <script src="javascript/settings.js"></script>
+    <script src="javascript/change.js"></script>
+    <script src="javascript/global.js"></script>
+    <script src="javascript/dashboard.js"></script>
 </body>
 </html>

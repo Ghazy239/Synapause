@@ -1,53 +1,40 @@
 console.log("Synapause Content Loaded");
 
-window.addEventListener(
-    "message",
-    (event)=>{
-        if(
-            event.source!==window
-        ){
-            return;
-        }
-
-        if(
-            event.data.type!==
-            "SYNAPAUSE_LOGIN"
-        ){
-            return;
-        }
-
-        chrome.storage.local.set({
-            synapauseUser:
-            event.data.user
-        },()=>{
-            console.log(
-                "Extension Storage Updated"
-            );
-
-            console.log(
-                event.data.user
-            );
-        });
-    }
-);
-
 chrome.storage.local.get(
     "synapauseUser",
     (result)=>{
         const user =
         result.synapauseUser;
 
-        console.log(
-            "Current Extension User:"
-        );
-
+        console.log("USER OBJECT");
         console.log(user);
 
         if(user){
             USER_ID = user.id;
+            USER_NAME = user.username;
+
+            console.log("USERNAME =", USER_NAME);
         }
+
     }
 );
+
+chrome.storage.onChanged.addListener((changes, area) => {
+    if(area !== "local"){
+        return;
+    }
+
+    if(!changes.synapauseUser){
+        return;
+    }
+
+    const user = changes.synapauseUser.newValue;
+
+    console.log("USER UPDATED");
+    console.log(user);
+    USER_ID = user.id;
+    USER_NAME = user.username;
+});
 
 const NEXT_QUESTION_API =
 "https://script.google.com/macros/s/AKfycby68KOeiPvpNscnSwTqtZa18eLCxLOsZLCSNaYEnJa7py1g9poZrDP4IT5jGKh0_nD0/exec";
@@ -56,6 +43,7 @@ const ANALYTICS_API =
 "https://script.google.com/macros/s/AKfycbzDvygssssnKnU79C_MYw9ozTz5xdvq5AE4HgmyMkwIGi9YBYRIfVsTNjyfzLYczR6y/exec";
 
 let USER_ID = "";
+let USER_NAME = "";
 
 chrome.runtime.onMessage.addListener(
 (message)=>{
@@ -159,7 +147,30 @@ async function createOverlay(){
 
     overlay.innerHTML = html;
 
+    const haloBox = overlay.querySelector("#halo-box");
+    const quizBox = overlay.querySelector("#quiz-box");
+    const continueBtn = overlay.querySelector("#continue-btn");
     const savedState = await getQuizState();
+    const greeting = GREETINGS[Math.floor(Math.random()*GREETINGS.length)];
+    const lighter = LIGHTER[Math.floor(Math.random()*LIGHTER.length)];
+    const persuasion = PERSUASIONS[Math.floor(Math.random()*PERSUASIONS.length)];
+    const displayName = USER_NAME || "Teman";
+
+    overlay.querySelector(
+        "#halo-title"
+    ).textContent =
+    `${greeting}, ${displayName}!`;
+
+    overlay.querySelector(
+        "#halo-lighter"
+    ).textContent = lighter;
+
+    overlay.querySelector(
+        "#halo-message"
+    ).textContent = persuasion;
+
+    console.log("Saved State:");
+    console.log(savedState);
 
     if(savedState){
         questions =
@@ -179,17 +190,23 @@ async function createOverlay(){
     else{
         await startSession();
         await loadQuestions();
-        await saveQuizState();
         currentQuestion = 0;
+        quizSeconds = 30;
+        questionStartTime = 0;
+        isPaused = false;
+        await saveQuizState();;
     }
-
-    loadQuestion(overlay);
 
     document.body.appendChild(overlay);
 
-    bindAnswerButtons(overlay);
+    continueBtn.addEventListener("click", () => {
+        haloBox.style.display = "none";
+        quizBox.style.display = "block";
 
-    startQuizTimer();
+        loadQuestion(overlay);
+        bindAnswerButtons(overlay);
+        startQuizTimer();
+    });
 
     document.body.style.overflow ="hidden";
     document.documentElement.style.pointerEvents ="none";
@@ -229,21 +246,66 @@ const backupquestions=[
     }
 ];
 
+const GREETINGS = [
+    "HALOW",
+    "HAIII",
+    "HEI HEI",
+    "ALOO",
+    "DEY"
+];
+
+const LIGHTER = [
+    "Konten di layar ini tak akan pernah habis, tapi waktumu hari ini ada batasnya. Sudah berapa jam yang terlewat tanpa kamu sadari?",
+    "Kamu terlalu berharga kalau cuma jadi penonton keberhasilan orang lain setiap hari. Kapan giliran kamu yang melangkah dan mewujudkan impianmu sendiri?",
+    "Rencananya cuma mau sebentar, kan? Tanpa sadar, jempolmu terus mengusap layar, sementara hal-hal penting di hidupmu sedang menunggumu...",
+    "Coba tanyakan ke dirimu sendiri: apakah kamu yang sedang memegang ponsel ini, atau justru ponsel ini yang sedang mengendalikan hari-harimu? Kalau kata Einstein sih, Life is like riding a bicycle. To keep your balance, you must keep moving.",
+    "Pikiranmu sedang lelah karena terlalu banyak informasi yang masuk. Matikan layarnya sejenak, biarkan otakmu bernapas dan istirahat yang sebenarnya.",
+    "Kira-kira, dirimu di masa depan nanti akan berterima kasih atau malah menyesal saat mengingat apa yang kamu lakukan dengan ponselmu hari ini?",
+    "Ada orang-orang nyata di sekitarmu yang rindu mengobrol dan menghabiskan waktu bersamamu secara utuh, bukan cuma ragamu yang ada di dekat mereka.",
+    "Menutup aplikasi ini memang butuh niat kuat. Tapi aku percaya, kamu punya kendali penuh atas dirimu sendiri. Kata Plato, The beginning is the most important part of the work.",
+    "Hal terburuk dari terlalu lama scrolling adalah menyadari bahwa hari sudah malam, sementara tak ada satu pun hal berarti yang selesai kamu kerjakan.",
+    "Dunia nyata dan potensi dirimu sudah menanti di luar layar ini. Yuk, kunci ponselmu sekarang dan mulai lakukan satu hal kecil yang bermakna!",
+    "Setiap kali kamu mengabaikan tujuanmu demi scrolling, ada versi dirimu di masa depan yang pelan-pelan sedang kamu kecewakan. Kamu yakin mau terus menyakiti potensinya? kalau kata Nelson Mandela, It always seems impossible until it's done.",
+    "Di dekatmu, ada orang yang merindukan perhatian utuhmu. Jangan sampai suatu hari kamu sadar, kamu lebih sering menatap layar dingin ini daripada menatap mata orang-orang yang mencintaimu.",
+    "Jujur, setelah berjam-jam mengusap layar, apakah hatimu merasa lebih tenang dan bahagia? Atau justru merasa makin kosong dan kesepian?",
+    "Hari ini hanya terjadi satu kali dalam hidupmu. Sayang sekali kalau momen berharga ini menguap begitu saja hanya untuk menonton kehidupan orang lain. Kata guru besar Mahatma Ghandi, The future depends on what you do today.",
+    "Kamu cuma doomscrolling seharian? pikirkan masa depanmu.. Kalau kata uncle Ben, With great power, comes great responsibility."
+];
+
+const PERSUASIONS = [
+    "Ayo istirahat sejenak 30 detik bersama.",
+    "Waktunya merenggangkan badan dan melihat sekeliling.",
+    "Yuk, beralih dari sekadar menonton jadi berkarya!",
+    "Siap untuk kembali mengejar tujuan nyatamu?",
+    "Ayo beri mata kita kesempatan untuk bernapas sejenak.",
+    "Yuk, ikuti kuis otak singkat ini sebelum lanjut lagi.",
+    "Bagaimana kalau kita coba tantangan fokus singkat sekarang?",
+    "Ayo taruh layarnya sebentar.",
+    "Waktunya bikin hari ini bermakna. Mulai yuk?",
+    "Yuk, melangkah keluar dan nikmati dunia nyata.",
+    "Siap untuk menyegarkan pikiran dan mulai lagi dari awal?",
+    "Ayo tarik napas dalam-dalam bersama.",
+    "Waktunya menyelesaikan tugas-tugas penting itu!",
+    "Yuk, isi ulang energi pikiran kita dengan jeda singkat.",
+    "Siap menguji kemampuan?"    
+];
+
 let questions = [];
-
 let SESSION_ID = "";
-
 let questionStartTime = 0;
-
 let currentQuestion = 0;
-
 let quizSeconds = 30;
-
 let quizCountdown;
-
 let isPaused = false;
 
 async function saveQuizState(){
+    console.log("SAVE STATE");
+    console.log({
+        currentQuestion,
+        quizSeconds,
+        isPaused
+    });
+
     chrome.runtime.sendMessage({
         action:"saveQuizState",
 
@@ -302,6 +364,7 @@ function startQuizTimer(){
 }
 
 function loadQuestion(root){
+    console.log("LOAD QUESTION USER_ID =", USER_ID);
     questionStartTime = Date.now();
 
     const feedbackBox=
@@ -516,6 +579,7 @@ async function loadReplacementQuestion(){
 }
 
 async function startSession(){
+    console.log("START SESSION USER_ID =", USER_ID);
     const response = await fetch(
         ANALYTICS_API,{
             method:"POST",

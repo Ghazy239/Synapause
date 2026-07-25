@@ -2,7 +2,11 @@ chrome.runtime.onInstalled.addListener(() => {
     console.log("Synapause Installed");
 });
 
-let monitoredSites = [];
+const monitoredSites = [
+    "youtube.com",
+    "instagram.com",
+    "tiktok.com"
+];
 
 let session = {
     active: false,
@@ -264,7 +268,9 @@ chrome.runtime.onMessage.addListener(
     }
 
     if(message.action==="clearQuizState"){
+        console.log("CLEAR QUIZ STATE");
         quizState = null;
+        console.log(quizState);
         return;
     }
 
@@ -276,18 +282,24 @@ chrome.runtime.onMessage.addListener(
 });
 
 chrome.runtime.onMessageExternal.addListener(
-(message, sender, sendResponse)=>{
-    if(message.action==="updateMonitoredSites"){
-        monitoredSites = message.sites;
+(message,sender,sendResponse)=>{
+    console.log("EXTERNAL MESSAGE RECEIVED");
+    console.log(message);
+    if(message.action==="login"){
+        chrome.storage.local.set({
+            synapauseUser:message.user
+        },()=>{
+            console.log(
+                "Extension User Updated"
+            );
 
-        console.log(
-            "Monitored Sites Updated:",
-            monitoredSites
-        );
+            console.log(message.user);
 
-        sendResponse({
-            success:true
+            sendResponse({
+                success:true
+            });
         });
+
+       return true;
     }
-    return true;
 });
