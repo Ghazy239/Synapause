@@ -5,7 +5,9 @@ chrome.runtime.onInstalled.addListener(() => {
 const monitoredSites = [
     "youtube.com",
     "instagram.com",
-    "tiktok.com"
+    "tiktok.com",
+    "x.com",
+    "threads.com"
 ];
 
 let session = {
@@ -46,7 +48,7 @@ function startTimer(){
             timer.seconds
         );
 
-        if(timer.seconds>=15){
+        if(timer.seconds>=900){
             clearInterval(timer.interval);
             timer.running=false;
             quizRequired=true;
