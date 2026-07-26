@@ -129,20 +129,15 @@ async function loginUser(){
             console.log("LOGIN RESULT");
             console.log(result);
 
-            chrome.runtime.sendMessage(
-                "lhmdogbhjmekciofjgeemncldobfegbp",
-                {
-                    action:"login",
-                    user:{
-                        username:result.username,
-                        email:result.email,
-                        id:result.id
-                    }
-                },
-                response=>{
-                    console.log("Extension:",response);
+            window.postMessage({
+                source: "synapause",
+                action: "login",
+                user: {
+                    username: result.username,
+                    email: result.email,
+                    id: result.id
                 }
-            );
+            }, "*");
 
             console.log("POST MESSAGE SENT");
 
@@ -399,20 +394,15 @@ registerBtn.addEventListener("click", async()=>{
                 })
             );
 
-            chrome.runtime.sendMessage(
-                "lhmdogbhjmekciofjgeemncldobfegbp",
-                {
-                    action:"login",
-                    user:{
-                        username:result.username,
-                        email:result.email,
-                        id:result.id
-                    }
-                },
-                response=>{
-                    console.log("Extension:",response);
+            window.postMessage({
+                source: "synapause",
+                action: "login",
+                user: {
+                    username: result.username,
+                    email: result.email,
+                    id: result.id
                 }
-            );
+            }, "*");
 
             updateNavbar();
 

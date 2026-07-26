@@ -244,22 +244,22 @@ chrome.tabs.onRemoved.addListener(async(tabId) => {
 
 chrome.runtime.onMessage.addListener(
 (message, sender, sendResponse)=>{
-    if(message.action==="saveQuizState"){
-        quizState = {
-            ...message.state,
-            tabId: sender.tab.id
-        };
-        getMonitoredTabs().then(tabs=>{
-            tabs.forEach(tab=>{
-                chrome.tabs.sendMessage(
-                    tab.id,
-                    {
-                        action:"syncQuizState"
-                    }
-                );
+    console.log("BACKGROUND RECEIVED");
+    console.log(message);
+    
+    if (message.action === "login") {
+        chrome.storage.local.set({
+            synapauseUser: message.user
+        }, () => {
+            console.log("Extension User Updated");
+            console.log(message.user);
+
+            sendResponse({
+                success: true
             });
         });
-        return;
+
+        return true;
     }
 
     if(message.action==="getQuizState"){
@@ -278,28 +278,5 @@ chrome.runtime.onMessage.addListener(
         resetTimer();
         startTimer();
         console.log("Timer Restarted");
-    }
-});
-
-chrome.runtime.onMessageExternal.addListener(
-(message,sender,sendResponse)=>{
-    console.log("EXTERNAL MESSAGE RECEIVED");
-    console.log(message);
-    if(message.action==="login"){
-        chrome.storage.local.set({
-            synapauseUser:message.user
-        },()=>{
-            console.log(
-                "Extension User Updated"
-            );
-
-            console.log(message.user);
-
-            sendResponse({
-                success:true
-            });
-        });
-
-       return true;
     }
 });

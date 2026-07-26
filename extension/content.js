@@ -1,5 +1,34 @@
 console.log("Synapause Content Loaded");
 
+window.addEventListener("message", (event) => {
+    console.log("CONTENT RECEIVED");
+    console.log(event.data);
+    
+    if (event.source !== window) {
+        return;
+    }
+
+    if (
+        event.origin !== "https://ghazy239.github.io" &&
+        !event.origin.startsWith("http://127.0.0.1:") &&
+        !event.origin.startsWith("http://localhost:")
+    ) {
+        return;
+    }
+
+    if (!event.data) {
+        return;
+    }
+
+    if (event.data.source !== "synapause") {
+        return;
+    }
+
+    chrome.runtime.sendMessage(event.data, (response) => {
+        console.log("Background:", response);
+    });
+});
+
 chrome.storage.local.get(
     "synapauseUser",
     (result)=>{

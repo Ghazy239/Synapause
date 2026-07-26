@@ -50,6 +50,9 @@
   "content_scripts": [
     {
       "matches": [
+        "http://127.0.0.1/*",
+        "http://localhost/*",
+        "http://localhost:5500/*",
         "*://youtube.com/*",
         "*://*.youtube.com/*",
         "*://instagram.com/*",
