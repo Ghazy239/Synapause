@@ -50,12 +50,16 @@
   "content_scripts": [
     {
       "matches": [
-        "*://youtube.com/*",
-        "*://*.youtube.com/*",
-        "*://instagram.com/*",
-        "*://*.instagram.com/*",
+        "*://youtube.com/shorts/*",
+        "*://*.youtube.com/shorts/*",
+        "*://instagram.com/reels/*",
+        "*://*.instagram.com/reels/*",
         "*://tiktok.com/*",
         "*://*.tiktok.com/*",
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://threads.com/*",
+        "*://*.threads.com/*",
         "https://ghazy239.github.io/*"
       ],
       "js": [
