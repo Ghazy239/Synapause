@@ -48,7 +48,7 @@ function startTimer(){
             timer.seconds
         );
 
-        if(timer.seconds>=900){
+        if(timer.seconds>=10){
             clearInterval(timer.interval);
             timer.running=false;
             quizRequired=true;
